@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Filmweb - najwyżej oceniane przez krytyków</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<header class="topbar">
+  <h1>Najwyżej oceniane filmy wg krytyków</h1>
+</header>
+
+<main class="layout">
+  <aside class="filters">
+    <label>
+      Rok
+      <select id="filter-year"><option value="">Wszystkie</option></select>
+    </label>
+
+    <label>
+      Gatunek
+      <select id="filter-genre"><option value="">Wszystkie</option></select>
+    </label>
+
+    <label>
+      Min. liczba recenzji krytyków
+      <input id="filter-min-votes" type="number" min="0" value="0" />
+    </label>
+
+    <label>
+      Sortuj wg
+      <select id="filter-sort">
+        <option value="critics_score">Oceny krytyków</option>
+        <option value="user_score">Oceny użytkowników</option>
+      </select>
+    </label>
+
+    <label>
+      Kolejność
+      <select id="filter-order">
+        <option value="desc">Malejąco</option>
+        <option value="asc">Rosnąco</option>
+      </select>
+    </label>
+  </aside>
+
+  <section class="results">
+    <div id="status" class="status"></div>
+    <div id="movie-list" class="movie-grid"></div>
+    <div class="pagination">
+      <button id="prev-page">&laquo; Poprzednia</button>
+      <span id="page-info"></span>
+      <button id="next-page">Następna &raquo;</button>
+    </div>
+  </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>
