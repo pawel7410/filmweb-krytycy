@@ -127,26 +127,15 @@ body {
 .score--critics { color: var(--accent); font-weight: 700; }
 .score--user { color: var(--muted); }
 
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
+.scroll-sentinel {
+  height: 1px;
 }
 
-.pagination button {
-  background: var(--panel);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.pagination button:disabled {
-  opacity: 0.4;
-  cursor: default;
+.load-more-status {
+  text-align: center;
+  color: var(--muted);
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 700px) {
@@ -160,6 +149,7 @@ body {
 
   .layout {
     flex-direction: column;
+    align-items: stretch;
     padding: 1rem;
     gap: 1rem;
   }
@@ -170,6 +160,10 @@ body {
     position: static;
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+  .results {
+    width: 100%;
   }
 
   .filters label {
@@ -189,10 +183,5 @@ body {
   .movie-card__scores {
     flex-direction: column;
     gap: 0.15rem;
-  }
-
-  .pagination {
-    flex-wrap: wrap;
-    gap: 0.5rem;
   }
 }
