@@ -21,6 +21,8 @@ const el = {
   status: document.getElementById("status"),
   sentinel: document.getElementById("scroll-sentinel"),
   loadMoreStatus: document.getElementById("load-more-status"),
+  backToFilters: document.getElementById("back-to-filters"),
+  filters: document.querySelector(".filters"),
 };
 
 async function loadFilterOptions() {
@@ -161,5 +163,13 @@ const observer = new IntersectionObserver(
   { rootMargin: "600px" }
 );
 observer.observe(el.sentinel);
+
+el.backToFilters.addEventListener("click", () => {
+  el.filters.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+window.addEventListener("scroll", () => {
+  el.backToFilters.classList.toggle("visible", window.scrollY > 400);
+});
 
 loadFilterOptions().then(resetAndLoad);
