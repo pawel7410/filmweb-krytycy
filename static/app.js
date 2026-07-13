@@ -1,4 +1,5 @@
 const state = {
+  view: "browse", // "browse" | "watchlist"
   year: "",
   genre: "",
   minVotes: 0,
@@ -23,6 +24,9 @@ const el = {
   loadMoreStatus: document.getElementById("load-more-status"),
   backToFilters: document.getElementById("back-to-filters"),
   filters: document.querySelector(".filters"),
+  toggleWatchlist: document.getElementById("toggle-watchlist"),
+  watchlistLabel: document.getElementById("watchlist-toggle-label"),
+  watchlistCount: document.getElementById("watchlist-count"),
 };
 
 async function loadFilterOptions() {
@@ -68,8 +72,10 @@ function movieCard(movie) {
   const genres = movie.genres.map((g) => g.name).join(", ");
   const criticsScore = movie.critics_score != null ? movie.critics_score.toFixed(1) : "-";
   const userScore = movie.user_score != null ? movie.user_score.toFixed(1) : "-";
+  const inWatchlist = isInWatchlist(movie.id);
 
   card.innerHTML = `
+    <button class="watch-btn${inWatchlist ? " active" : ""}" type="button" aria-label="Dodaj do listy do obejrzenia">${inWatchlist ? "★" : "☆"}</button>
     <img src="${movie.poster_url || ""}" alt="" loading="lazy" />
     <div class="movie-card__body">
       <div class="movie-card__title">${movie.title}</div>
@@ -80,7 +86,40 @@ function movieCard(movie) {
       </div>
     </div>
   `;
+
+  const watchBtn = card.querySelector(".watch-btn");
+  watchBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInWatchlist(movie.id)) {
+      removeFromWatchlist(movie.id);
+      watchBtn.classList.remove("active");
+      watchBtn.textContent = "☆";
+      if (state.view === "watchlist") card.remove();
+    } else {
+      addToWatchlist(movie);
+      watchBtn.classList.add("active");
+      watchBtn.textContent = "★";
+    }
+    updateWatchlistCount();
+  });
+
   return card;
+}
+
+function updateWatchlistCount() {
+  el.watchlistCount.textContent = String(getWatchlist().length);
+}
+
+function renderWatchlistView() {
+  el.list.innerHTML = "";
+  const list = getWatchlist();
+  for (const movie of list) {
+    el.list.appendChild(movieCard(movie));
+  }
+  el.status.textContent =
+    list.length === 0 ? "Twoja lista do obejrzenia jest pusta. Dodaj filmy klikając ☆ na karcie." : "";
+  el.loadMoreStatus.textContent = "";
 }
 
 function appendMovies(payload) {
@@ -172,4 +211,21 @@ window.addEventListener("scroll", () => {
   el.backToFilters.classList.toggle("visible", window.scrollY > 400);
 });
 
+el.toggleWatchlist.addEventListener("click", () => {
+  if (state.view === "browse") {
+    state.view = "watchlist";
+    state.hasMore = false;
+    el.watchlistLabel.textContent = "✕ Wróć do rankingu";
+    el.filters.style.display = "none";
+    window.scrollTo({ top: 0 });
+    renderWatchlistView();
+  } else {
+    state.view = "browse";
+    el.watchlistLabel.textContent = "☆ Moja lista";
+    el.filters.style.display = "";
+    resetAndLoad();
+  }
+});
+
+updateWatchlistCount();
 loadFilterOptions().then(resetAndLoad);

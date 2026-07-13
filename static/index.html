@@ -9,6 +9,10 @@
   <body>
     <header class="topbar">
       <h1>Najwyżej oceniane filmy wg krytyków</h1>
+      <button id="toggle-watchlist" class="watchlist-toggle" type="button">
+        <span id="watchlist-toggle-label">☆ Moja lista</span>
+        (<span id="watchlist-count">0</span>)
+      </button>
     </header>
 
     <main class="layout">
@@ -59,6 +63,7 @@
 
     <button id="back-to-filters" class="back-to-filters" type="button">&uarr; Filtry</button>
 
+    <script src="/watchlist.js"></script>
     <script src="/app.js"></script>
   </body>
 </html>
